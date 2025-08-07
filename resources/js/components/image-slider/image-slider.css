@@ -1,0 +1,29 @@
+.image-slider.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: scroll;
+    width: 320px;
+    height: 240px;
+    margin: 0 auto;
+}
+.image-slider.container .image-runner {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+.image-slider.container .image-runner figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border: 1px solid #111;
+    background-color: #111;
+    box-sizing: border-box;
+}
+.image-slider.container .image-runner figure img {
+    max-height: 100%;
+    max-width: 100%;
+}

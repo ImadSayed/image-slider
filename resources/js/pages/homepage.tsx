@@ -1,4 +1,4 @@
-import ImageSlider from '../components/image-slider';
+import ImageSlider from '../components/image-slider/image-slider';
 
 export default function homepage() {
     return (
