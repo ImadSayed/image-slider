@@ -1,20 +1,15 @@
-import { createContext } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Image } from '../types/index';
+import { ImagesContext } from '../use-context/context';
+import Homepage from './homepage';
 
-export interface Image {
-    id: number;
-    path: string;
-    isActive: boolean;
-}
-
-export const ImagesContext = createContext<Image[] | undefined>(undefined);
-
+// Expect an array of image URLs being passed in via props
 export interface HomeProps {
     imageUrls: string[];
 }
 
 export default function home({ imageUrls }: HomeProps) {
-    console.log(imageUrls);
+    console.log('props', imageUrls);
 
     // Transform string[] to Images[]
     const images: Image[] = imageUrls.map((path, index) => ({
@@ -23,13 +18,14 @@ export default function home({ imageUrls }: HomeProps) {
         isActive: false, // Default value
     }));
 
-    console.log(images);
+    console.log('home', images);
 
     return (
         <ImagesContext.Provider value={images}>
             <BrowserRouter>
-                {/* <Route path="/" element={<DefaultImageSlider />} /> */}
-                {/* <Route path="/animation" element={<AnimatedImageSlider />} /> */}
+                <Routes>
+                    {<Route path="/" element={<Homepage />} />}
+                </Routes>
             </BrowserRouter>
         </ImagesContext.Provider>
     );
