@@ -3,7 +3,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    overflow-x: scroll;
+    overflow-x: hidden;
     width: 320px;
     height: 240px;
     margin: 0 auto;
