@@ -50,7 +50,7 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
         <div className="image-slider" data-image="1">
             <NavigationButtons clickPrevious={goToPrevious} clickNext={goToNext} />
             <div className="container" ref={containerRef}>
-                {containerWidth !== null && <ImageSliderRunner containerWidth={containerWidth} />}
+                {containerWidth !== null && <ImageSliderRunner containerWidth={containerWidth} currentIndex={currentIndex} />}
             </div>
         </div>
     );
