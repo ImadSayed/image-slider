@@ -44,23 +44,24 @@
     height: 100%;
     z-index: 2;
     box-sizing: border-box;
+    pointer-events: none;
 }
 .image-slider .navigation-buttons > button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     padding: 10px;
     cursor: pointer;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     display: flex;
-    opacity: 0.5;
     color: transparent;
+    pointer-events: auto;
 }
 .image-slider .navigation-buttons > button:hover {
-    opacity: 0.9;
+    background-color: rgba(255, 255, 255, 1);
 }
 .image-slider .navigation-buttons button.previous-button {
     left: 2%;
@@ -81,11 +82,11 @@
     transform: translate(-50%, -50%);
     color: #111;
     background-image: url('/public/storage/icons/chevron.png');
-    background-size: 50px 50px;
+    background-size: 30px 30px;
     background-repeat: no-repeat;
     background-position: center;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
 }
 .image-slider .navigation-buttons button.previous-button:after {

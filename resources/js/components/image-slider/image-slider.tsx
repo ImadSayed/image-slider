@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSwipeNavigation } from '../../hooks/use-swipe-navigation';
 import { useImagesContext } from '../../use-context/context';
 import NavigationButtons from '../navigation-buttons'; // Import nav buttons
 import ImageSliderRunner from './image-slider-runner'; // Import images in slider
@@ -14,6 +15,7 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
     const [isJumping, setIsJumping] = useState(false);
     // parent wrapper to useRef as it wont change and doesn't need re-drawing if props or imageContext change
     const containerRef = useRef<HTMLDivElement>(null);
+    const imageSliderRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState(0);
 
     useEffect(() => {
@@ -94,13 +96,15 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
         }
     }, [currentIndex, images.length, containerWidth]);
 
+    useSwipeNavigation(containerRef, goToNext, goToPrevious, containerWidth, currentIndex);
+
     //Handle case where images array is empty
     if (!images || images.length === 0) {
         return <div>No Images provided</div>;
     }
 
     return (
-        <div className="image-slider" data-image="1">
+        <div className="image-slider" data-image="1" ref={imageSliderRef}>
             <NavigationButtons clickPrevious={goToPrevious} clickNext={goToNext} />
             <div className="container" ref={containerRef}>
                 {containerWidth !== null && <ImageSliderRunner containerWidth={containerWidth} currentIndex={currentIndex} />}
