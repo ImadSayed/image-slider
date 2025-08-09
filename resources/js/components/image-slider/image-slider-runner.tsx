@@ -38,5 +38,19 @@ export default function ImageSliderRunner({ containerWidth, currentIndex }: Imag
         );
     });
 
+    if (images.length > 1) {
+        imagesRunner.unshift(
+            <figure key="clone-last" style={figureWidth}>
+                <img src={images[images.length - 1].path} alt="" />
+            </figure>
+        );
+        imagesRunner.push(
+            <figure key="clone-first" style={figureWidth}>
+                <img src={images[0].path} alt="" />
+            </figure>
+        );
+    }
+
+
     return <div className="image-runner">{imagesRunner}</div>;
 }
