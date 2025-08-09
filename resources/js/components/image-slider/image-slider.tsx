@@ -41,24 +41,6 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
         setCurrentIndex(() => (currentIndex === images.length - 1 ? 0 : currentIndex + 1));
     }, [currentIndex, images.length]);
 
-    useEffect(() => {
-        const handleNavigationButtonClick = (event: Event) => {
-            const customEvent = event as CustomEvent;
-            const { direction } = customEvent.detail;
-            if (direction === 'prev') {
-                goToPrevious();
-            } else if (direction === 'next') {
-                goToNext();
-            }
-        };
-
-        document.addEventListener('navigation-button-click', handleNavigationButtonClick);
-
-        return () => {
-            document.removeEventListener('navigation-button-click', handleNavigationButtonClick);
-        };
-    });
-
     //Handle case where images array is empty
     if (!images || images.length === 0) {
         return <div>No Images provided</div>;
@@ -66,7 +48,7 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
 
     return (
         <div className="image-slider" data-image="1">
-            <NavigationButtons />
+            <NavigationButtons clickPrevious={goToPrevious} clickNext={goToNext} />
             <div className="container" ref={containerRef}>
                 {containerWidth !== null && <ImageSliderRunner containerWidth={containerWidth} />}
             </div>
