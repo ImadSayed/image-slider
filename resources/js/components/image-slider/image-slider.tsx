@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useImagesContext } from '../../use-context/context';
-import ImageSliderRunner from './image-slider-runner';
+import NavigationButtons from '../navigation-buttons'; // Import nav buttons
+import ImageSliderRunner from './image-slider-runner'; // Import images in slider
 import './image-slider.css';
-
 interface ImageSliderProps {
     readonly autoSlide?: boolean; // Optional: auto-slide
     readonly slideInterval?: number; // Optional: interval for auto-slide
@@ -10,7 +10,7 @@ interface ImageSliderProps {
 
 export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }: ImageSliderProps) {
     const images = useImagesContext();
-    const [currentIndex, setCurrentIndex] = useState(1);
+    const [currentIndex, setCurrentIndex] = useState(0);
     // parent wrapper to useRef as it wont change and doesn't need re-drawing if props or imageContext change
     const containerRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState(0);
@@ -22,23 +22,41 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
         }
     }, []);
 
-    const scrollSlider = (index: number) => {
+    useEffect(() => {
         if (containerRef.current) {
             // ScrollLeft is the number of pixels to scroll
-            const leftEdgeOfImageToScrollTo: number = index * containerWidth;
+            const leftEdgeOfImageToScrollTo: number = currentIndex * containerWidth;
             containerRef.current.scrollLeft = leftEdgeOfImageToScrollTo;
         }
-    };
-
-    const calculateScrollPoint = useCallback(() => {
-        // Scrollbar is the length of the container
-        // Once we have the number of pixels to scroll, we can calculate the scroll point
-        return containerWidth / (currentIndex * containerWidth);
+        // This should take effect whenever currentIndex is updated
     }, [currentIndex, containerWidth]);
 
+    const goToPrevious = useCallback(() => {
+        // If currentIndex is the first image, go to the last image
+        setCurrentIndex(() => (currentIndex === 0 ? images.length - 1 : currentIndex - 1));
+    }, [currentIndex, images.length]);
+
+    const goToNext = useCallback(() => {
+        // If currentIndex is the last image, go back to the first image
+        setCurrentIndex(() => (currentIndex === images.length - 1 ? 0 : currentIndex + 1));
+    }, [currentIndex, images.length]);
+
     useEffect(() => {
-        const scrollPoint = calculateScrollPoint();
-        scrollSlider(scrollPoint);
+        const handleNavigationButtonClick = (event: Event) => {
+            const customEvent = event as CustomEvent;
+            const { direction } = customEvent.detail;
+            if (direction === 'prev') {
+                goToPrevious();
+            } else if (direction === 'next') {
+                goToNext();
+            }
+        };
+
+        document.addEventListener('navigation-button-click', handleNavigationButtonClick);
+
+        return () => {
+            document.removeEventListener('navigation-button-click', handleNavigationButtonClick);
+        };
     });
 
     //Handle case where images array is empty
@@ -47,8 +65,11 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
     }
 
     return (
-        <div className="image-slider container" ref={containerRef} data-image="1">
-            {containerWidth !== null && <ImageSliderRunner containerWidth={containerWidth} />}
+        <div className="image-slider" data-image="1">
+            <NavigationButtons />
+            <div className="container" ref={containerRef}>
+                {containerWidth !== null && <ImageSliderRunner containerWidth={containerWidth} />}
+            </div>
         </div>
     );
 }

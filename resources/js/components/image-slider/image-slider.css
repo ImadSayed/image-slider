@@ -1,29 +1,96 @@
-.image-slider.container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    overflow-x: hidden;
+.image-slider {
+    position: relative;
+    overflow: hidden;
     width: 320px;
     height: 240px;
     margin: 0 auto;
+    box-sizing: border-box;
+    z-index: 1;
 }
-.image-slider.container .image-runner {
+.image-slider .container {
+    overflow-x: scroll;
+    width: 320px;
+    height: 240px;
+    position: relative;
+    box-sizing: border-box;
+    z-index: 1;
+}
+.image-slider .container .image-runner {
     display: flex;
     flex-direction: row;
     height: 100%;
+    width: fit-content;
 }
-.image-slider.container .image-runner figure {
+.image-slider .container .image-runner figure {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
-    border: 1px solid #111;
     background-color: #111;
     box-sizing: border-box;
 }
-.image-slider.container .image-runner figure img {
+.image-slider .container .image-runner figure img {
     max-height: 100%;
     max-width: 100%;
+}
+.image-slider .navigation-buttons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    box-sizing: border-box;
+}
+.image-slider .navigation-buttons > button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    opacity: 0.5;
+    color: transparent;
+}
+.image-slider .navigation-buttons > button:hover {
+    opacity: 0.9;
+}
+.image-slider .navigation-buttons button.previous-button {
+    left: 2%;
+}
+.image-slider .navigation-buttons button.next-button {
+    right: 2%;
+}
+.image-slider .navigation-buttons > button > span {
+    display: none;
+}
+.image-slider .navigation-buttons > button:after {
+    content: '';
+    display: block;
+    border-style: solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #111;
+    background-image: url('/public/storage/icons/chevron.png');
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.image-slider .navigation-buttons button.previous-button:after {
+    transform: rotateZ(180deg) translate(50%, 50%);
+}
+.image-slider .navigation-buttons > button:hover:after {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid #111;
 }

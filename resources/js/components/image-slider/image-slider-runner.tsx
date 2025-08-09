@@ -2,7 +2,6 @@ import { useImagesContext } from '../../use-context/context';
 
 export default function ImageSliderRunner({ containerWidth }: { readonly containerWidth: number }) {
     const images = useImagesContext();
-    const lastImage = images[images.length - 1];
 
     // Style the width of each img wrapper to be equal to image slider parent container
     const figureWidth = { width: `${containerWidth}px` };
@@ -21,13 +20,6 @@ export default function ImageSliderRunner({ containerWidth }: { readonly contain
             </figure>
         );
     });
-
-    // Load the last image as a clone at the start of the slider
-    imagesRunner.unshift(
-        <figure key={'cloned-' + images.length} data-index={images.length - 1} style={figureWidth}>
-            <img src={lastImage.path} data-src="" alt={'' + lastImage.id} />
-        </figure>,
-    );
 
     return <div className="image-runner">{imagesRunner}</div>;
 }
