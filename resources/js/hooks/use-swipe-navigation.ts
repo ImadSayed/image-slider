@@ -2,13 +2,19 @@ import { useEffect, useRef } from 'react';
 
 type SwipeCallback = () => void;
 
-export function useSwipeNavigation<T extends HTMLElement>(
-    ref: React.RefObject<T | null>,
-    onSwipeLeft: SwipeCallback,
-    onSwipeRight: SwipeCallback,
-    containerWidth: number,
-    currentIndex: number,
-) {
+interface UseSwipeNavigationProps {
+    ref: React.RefObject<HTMLElement | null>;
+    onSwipeLeft: SwipeCallback;
+    onSwipeRight: SwipeCallback;
+    containerWidth: number;
+    currentIndex: number;
+}
+
+/**
+ * Custom hook to handle swipe navigation for an image slider.
+ * It listens for touch events and determines swipe direction based on touch movement.
+ */
+export default function useSwipeNavigation({ ref, onSwipeLeft, onSwipeRight, containerWidth, currentIndex }: UseSwipeNavigationProps) {
     const touchStartX = useRef<number | null>(null);
     const lastScrollLeft = useRef<number>(0);
 
@@ -103,6 +109,7 @@ export function useSwipeNavigation<T extends HTMLElement>(
         element.addEventListener('touchend', handleTouchEnd);
 
         return () => {
+            // Remove Event Listeners on unmount
             element.removeEventListener('touchstart', handleTouchStart);
             element.removeEventListener('touchmove', handleTouchMove);
             element.removeEventListener('touchend', handleTouchEnd);
