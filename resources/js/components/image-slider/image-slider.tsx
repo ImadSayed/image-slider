@@ -2,20 +2,20 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSwipeNavigation } from '../../hooks/use-swipe-navigation';
 import { useImagesContext } from '../../use-context/context';
 import NavigationButtons from '../navigation-buttons'; // Import nav buttons
+import SlideToggle from '../ui/slide-toggle';
 import ImageSliderRunner from './image-slider-runner'; // Import images in slider
 import './image-slider.css';
 interface ImageSliderProps {
-    readonly autoSlide?: boolean; // Optional: auto-slide
     readonly slideInterval?: number; // Optional: interval for auto-slide
 }
 
-export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }: ImageSliderProps) {
+export default function ImageSlider({ slideInterval = 3000 }: ImageSliderProps) {
     const images = useImagesContext();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isJumping, setIsJumping] = useState(false);
+    const [autoSlideEnabled, setAutoSlideEnabled] = useState(false);
     // parent wrapper to useRef as it wont change and doesn't need re-drawing if props or imageContext change
     const containerRef = useRef<HTMLDivElement>(null);
-    const imageSliderRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState(0);
 
     useEffect(() => {
@@ -96,7 +96,16 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
         }
     }, [currentIndex, images.length, containerWidth]);
 
+    // Swipe Navigation
     useSwipeNavigation(containerRef, goToNext, goToPrevious, containerWidth, currentIndex);
+    
+    // Auto slide
+    useEffect(() => {
+        if (autoSlideEnabled) {
+            const slideTimer = setInterval(goToNext, slideInterval);
+            return () => clearInterval(slideTimer);
+        }
+    }, [autoSlideEnabled, slideInterval, goToNext]);
 
     //Handle case where images array is empty
     if (!images || images.length === 0) {
@@ -105,6 +114,9 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
 
     return (
         <div className="image-slider" data-image="1">
+            <div className="slide-toggle">
+                <SlideToggle onToggle={setAutoSlideEnabled} initial={autoSlideEnabled} />
+            </div>
             <NavigationButtons clickPrevious={goToPrevious} clickNext={goToNext} />
             <div className="container" ref={containerRef}>
                 {containerWidth !== null && <ImageSliderRunner containerWidth={containerWidth} currentIndex={currentIndex} />}
