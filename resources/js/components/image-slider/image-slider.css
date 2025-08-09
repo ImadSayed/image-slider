@@ -8,12 +8,13 @@
     z-index: 1;
 }
 .image-slider .container {
-    overflow-x: scroll;
+    overflow-x: hidden;
     width: 320px;
     height: 240px;
     position: relative;
     box-sizing: border-box;
     z-index: 1;
+    scroll-behavior: smooth;
 }
 .image-slider .container .image-runner {
     display: flex;

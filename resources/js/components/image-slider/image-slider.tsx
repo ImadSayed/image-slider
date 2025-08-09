@@ -22,11 +22,28 @@ export default function ImageSlider({ autoSlide = false, slideInterval = 3000 }:
         }
     }, []);
 
+    function animateScroll(element: HTMLElement, to: number, duration = 400) {
+        const start = element.scrollLeft;
+        const change = to - start;
+        const startTime = performance.now();
+
+        function animate(time: number) {
+            const elapsed = time - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease-in-out cubic
+            const ease = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+            element.scrollLeft = start + change * ease;
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        }
+        requestAnimationFrame(animate);
+    }
     useEffect(() => {
         if (containerRef.current) {
             // ScrollLeft is the number of pixels to scroll
             const leftEdgeOfImageToScrollTo: number = currentIndex * containerWidth;
-            containerRef.current.scrollLeft = leftEdgeOfImageToScrollTo;
+            animateScroll(containerRef.current, leftEdgeOfImageToScrollTo, 400);
         }
         // This should take effect whenever currentIndex is updated
     }, [currentIndex, containerWidth]);
