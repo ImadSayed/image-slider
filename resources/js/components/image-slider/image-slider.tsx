@@ -1,28 +1,43 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSwipeNavigation } from '../../hooks/use-swipe-navigation';
 import { useImagesContext } from '../../use-context/context';
+import CarouselDots from '../carousel-dots/carousel-dots'; // Import carousel dots
 import NavigationButtons from '../navigation-buttons'; // Import nav buttons
 import SlideToggle from '../ui/slide-toggle';
 import ImageSliderRunner from './image-slider-runner'; // Import images in slider
 import './image-slider.css';
+
 interface ImageSliderProps {
     readonly slideInterval?: number; // Optional: interval for auto-slide
 }
 
-export default function ImageSlider({ slideInterval = 3000 }: ImageSliderProps) {
+export default function ImageSlider({ slideInterval = 2500 }: ImageSliderProps) {
     const images = useImagesContext();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isJumping, setIsJumping] = useState(false);
     const [autoSlideEnabled, setAutoSlideEnabled] = useState(false);
     // parent wrapper to useRef as it wont change and doesn't need re-drawing if props or imageContext change
     const containerRef = useRef<HTMLDivElement>(null);
+    const dotWrapperRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState(0);
 
-    useEffect(() => {
+    const updateContainerWidth = () => {
         if (containerRef.current) {
-            // Set container width once div is mounted
             setContainerWidth(containerRef.current.getBoundingClientRect().width);
         }
+    };
+
+    useEffect(() => {
+        // Set width on mount
+        updateContainerWidth();
+
+        // Update width on window resize
+        window.addEventListener('resize', updateContainerWidth);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('resize', updateContainerWidth);
+        };
     }, []);
 
     useEffect(() => {
@@ -53,6 +68,7 @@ export default function ImageSlider({ slideInterval = 3000 }: ImageSliderProps) 
         }
         requestAnimationFrame(animate);
     }
+
     useEffect(() => {
         if (!containerRef.current) {
             return;
@@ -65,7 +81,8 @@ export default function ImageSlider({ slideInterval = 3000 }: ImageSliderProps) 
         } else {
             animateScroll(containerRef.current, scrollToIndex * containerWidth, 400);
         }
-        // This should take effect whenever currentIndex is updated
+
+        // This should take effect whenever any of the following are updated
     }, [currentIndex, containerWidth, isJumping]);
 
     const goToPrevious = useCallback(() => {
@@ -98,14 +115,25 @@ export default function ImageSlider({ slideInterval = 3000 }: ImageSliderProps) 
 
     // Swipe Navigation
     useSwipeNavigation(containerRef, goToNext, goToPrevious, containerWidth, currentIndex);
-    
-    // Auto slide
+
+    // Auto slide enabled
     useEffect(() => {
         if (autoSlideEnabled) {
             const slideTimer = setInterval(goToNext, slideInterval);
             return () => clearInterval(slideTimer);
         }
     }, [autoSlideEnabled, slideInterval, goToNext]);
+
+    // Click on a dot to update the currentIndex
+    const goToSlide = useCallback(
+        (index: number) => {
+            if (index < 0 || index >= images.length) {
+                return false;
+            }
+            setCurrentIndex(index);
+        },
+        [images],
+    );
 
     //Handle case where images array is empty
     if (!images || images.length === 0) {
@@ -120,6 +148,9 @@ export default function ImageSlider({ slideInterval = 3000 }: ImageSliderProps) 
             <NavigationButtons clickPrevious={goToPrevious} clickNext={goToNext} />
             <div className="container" ref={containerRef}>
                 {containerWidth !== null && <ImageSliderRunner containerWidth={containerWidth} currentIndex={currentIndex} />}
+            </div>
+            <div className="carousel-dot-wrapper" ref={dotWrapperRef}>
+                <CarouselDots currentIndex={currentIndex} totalSlides={images.length} onDotClick={goToSlide} />
             </div>
         </div>
     );

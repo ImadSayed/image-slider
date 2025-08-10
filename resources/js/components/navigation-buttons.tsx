@@ -1,16 +1,21 @@
 import { useEffect } from 'react';
 
 interface NavigationButtonsProps {
-    clickPrevious: () => void;
-    clickNext: () => void;
+    readonly clickPrevious: () => void;
+    readonly clickNext: () => void;
 }
 
+/**
+ * Custom component to handle click navigation for left and right buttons.
+ * @param clickPrevious - Callback for left button click.
+ * @param clickNext - Callback for right button click.
+ */
 export default function NavigationButtons({ clickPrevious, clickNext }: NavigationButtonsProps) {
     const handleClick = (direction: 'prev' | 'next') => {
         const event = new CustomEvent('navigation-button-click', { detail: { direction } });
         document.dispatchEvent(event);
     };
-    
+
     useEffect(() => {
         const handleNavigationButtonClick = (event: Event) => {
             const customEvent = event as CustomEvent;
@@ -25,6 +30,7 @@ export default function NavigationButtons({ clickPrevious, clickNext }: Navigati
         document.addEventListener('navigation-button-click', handleNavigationButtonClick);
 
         return () => {
+            // Destroy on unmount
             document.removeEventListener('navigation-button-click', handleNavigationButtonClick);
         };
     });

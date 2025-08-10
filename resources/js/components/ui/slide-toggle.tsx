@@ -18,7 +18,7 @@ export default function SlideToggle({ onToggle, initial = false }: SlideTogglePr
 
     return (
         <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', userSelect: 'none' }}>
-            <span style={{ fontSize: 14, backgroundColor: 'rgba(255,255,255,0.7)', padding: '2px 4px', borderRadius: '4px' }}>Auto Slide</span>
+            <span style={{ fontSize: 14, backgroundColor: 'rgba(255,255,255,0.7)', padding: '2px 4px', borderRadius: '4px', color: '#111', }}>Auto Play</span>
             <span style={{ position: 'relative', width: 40, height: 22, display: 'inline-block' }}>
                 <input
                     type="checkbox"

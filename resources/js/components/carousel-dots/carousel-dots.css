@@ -1,0 +1,33 @@
+.carousel-dots {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+}
+.carousel-dots .dot-container {
+    width: 1rem;
+    height: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.carousel-dots .dot-container button {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    border-radius: 50%;
+    width: 0.4rem;
+    height: 0.4rem;
+    cursor: pointer;
+}
+.carousel-dots .dot-container button.nearActive {
+    width: 0.5rem;
+    height: 0.9rem;
+}
+.carousel-dots .dot-container button.active.nearActive {
+    width: 0.5rem;
+    height: 0.9rem;
+    background-color: rgba(255, 255, 255, 1);
+}
