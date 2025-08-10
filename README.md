@@ -32,7 +32,7 @@ npm run dev
 > http://127.0.0.1:8000/
 
 #### Using the image slider in the broswer;
-- [] - click on the navigational buttons.
-- [] - if you are able to use touch mode then try and swipe the slider. Maybe even try to flick the slide instead of sliding across the entire screen.
-- [] - select Auto Play in the top right corner.
-- [] - click on one of the dots in the long line of dots towards the bottom / center of the image slider.
+- [ ] - click on the navigational buttons.
+- [ ] - if you are able to use touch mode then try and swipe the slider. Maybe even try to flick the slide instead of sliding across the entire screen.
+- [ ] - select Auto Play in the top right corner.
+- [ ] - click on one of the dots in the long line of dots towards the bottom / center of the image slider.
