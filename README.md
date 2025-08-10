@@ -1,6 +1,8 @@
-# <ins> This project is to demonstrate an image slider component.</ins> ## written in react & typescript.
+# <ins> This project is to demonstrate an image slider component.</ins> 
+## written in react & typescript.
+
 ### It loads the images in the storage/app/public/images/ folder.
-*It may eventually get build further to allow the user to upload some new images to show in the slider.*
+*It may eventually get built out further to allow the user to upload some new images to show in the slider.*
 
 To view the image slider in action via a browser, [click here](https://imageslider.imadsayed.co.uk/). You can find a written explnation of the solution approached, at the bottom of this file.
 
