@@ -43,6 +43,9 @@ npm run dev
 #### --------------------------------------------------------------------------------------------------
 
 ## Solution
+#### The solution is written in React with typescript and uses the Laravel framework and a little PHP to read images in from the store and provide them to the front end.
+
+##### The React solution:
 
 Five components;
 - the image slider parent wrapper, image-slider.tsx
