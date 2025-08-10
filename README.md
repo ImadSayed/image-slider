@@ -1,4 +1,4 @@
-# <ins> This project is to demonstrate an image slider component.</ins> 
+# <ins> This project is to demonstrate an image slider component.</ins> ## written in react & typescript.
 ### It loads the images in the storage/app/public/images/ folder.
 *It may eventually get build further to allow the user to upload some new images to show in the slider.*
 
@@ -45,9 +45,11 @@ npm run dev
 ## Solution
 #### The solution is written in React with typescript and uses the Laravel framework and a little PHP to read images in from the store and provide them to the front end.
 
-##### The React solution:
+##### The solution:
 
-Five components;
+One could have taken the easiest solution and implemented a Slick carousel but the idea of having less dependencies in a project, seems more efficient. Slick would also encourage the use of jQuery which would just be another dependency. I have decided to build it from scratch, this way we have more control over each step and we dont need to install a massive library just to create a carousel/image-slider.
+
+This solution has five components;
 - the image slider parent wrapper, image-slider.tsx
 - the image slider list of images, image-slider-runner.tsx
 - the navigation buttons, navigation-buttons.tsx
@@ -69,6 +71,10 @@ The "image-slider-runner" component returns a wrapper div which consists of, for
 
 The "image-slider" component is where everything comes together, where all the event callback functions rest, where the main render is returned and any further logic. imageslider.css provides the styling for this component.
 
+### Still needs improvement
+On some browsers the touch swipe doesn't invoke the sliding of the scroller. While it might appear to do so when swiping to the next image, if the user was to let go of the image slider before the image has scrolled 50% over then the image slider is to snap back to the current image but this should be animated/slow scroll and might not seem to.
+
+Also another issue on some browsers but not all, when on the first image and clicking the previous navigation button the image slider should take us to the last image. The way this is done that there is initially a cloned image to the left of the first image which gets scrolled into view. When the anmation scroll ends, the image slider jumps to the last image and the user shouldnt see the jump. However in some browsers there is a very quick scroll effect rather than a jump. This could be improved.
 
 
 
